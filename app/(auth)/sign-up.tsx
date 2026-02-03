@@ -1,20 +1,23 @@
 import CustomButton from '@/components/CustomButton'
 import CustomInput from '@/components/CustomInput'
+import { register } from '@/lib/appwrite'
 import { Link, router } from 'expo-router'
 import React, { useState } from 'react'
 import { Alert, Text, View } from 'react-native'
 
 const signUp = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const [form, setForm] = useState({ name: '', email: '', password: '' })
+  const [form, setForm] = useState({ name: 'Easy Man', email: 'easy@mailinator.com', password: 'Test123!' })
 
   const submit = async () => {
-    if (!form.name || !form.email || !form.password) return Alert.alert('Error', 'Please enter valid name, email and password')
+    const {name, email, password} = form;
+
+    if (!name || !email || !password) return Alert.alert('Error', 'Please enter valid name, email and password')
 
     setIsLoading(true)
 
     try {
-      // call appwrite signup
+      await register({name, email, password})
 
       Alert.alert('Success', 'User signed up successfully.')
       router.replace('/')
