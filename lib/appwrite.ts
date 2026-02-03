@@ -6,7 +6,12 @@ export const appwriteConfig = {
     platform: "com.easy.rnfoodapp",
     projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
     databaseId: "6979e88000237d72e7d2",
-    userCollectionId: "user"
+    assetsBucketId:'6981d9680006cfa22749',
+    userCollectionId: "user",
+    categoriesCollectionId: 'categories',
+    menuCollectionId: 'menu',
+    customizationsCollectionId: 'customizations',
+    menuCustomizationCollectionId: 'menu_customizations'
 }
 
 export const client = new Client();
