@@ -1,17 +1,17 @@
 import { CreateUserPrams, SignInParams } from "@/type";
-import { Account, Avatars, Client, Databases, ID, Query } from "react-native-appwrite";
+import { Account, Avatars, Client, Databases, ID, Query, Storage } from "react-native-appwrite";
 
 export const appwriteConfig = {
     endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
     platform: "com.easy.rnfoodapp",
     projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
     databaseId: "6979e88000237d72e7d2",
-    assetsBucketId:'6981d9680006cfa22749',
+    bucketId:'6981d9680006cfa22749',
     userCollectionId: "user",
     categoriesCollectionId: 'categories',
     menuCollectionId: 'menu',
     customizationsCollectionId: 'customizations',
-    menuCustomizationCollectionId: 'menu_customizations'
+    menuCustomizationsCollectionId: 'menu_customizations'
 }
 
 export const client = new Client();
@@ -23,7 +23,8 @@ client
 
 export const account = new Account(client);
 export const avatar = new Avatars(client);
-export const database = new Databases(client);
+export const databases = new Databases(client);
+export const storage = new Storage(client);
 
 // REGISTER ------------------------------------------------------------
 export const register = async ({ email, password, name }: CreateUserPrams) => {
@@ -41,7 +42,7 @@ export const register = async ({ email, password, name }: CreateUserPrams) => {
 
         const avatarURL = avatar.getInitialsURL(name)
 
-        const result = await database.createDocument(
+        const result = await databases.createDocument(
             appwriteConfig.databaseId,
             appwriteConfig.userCollectionId,
             ID.unique(),
@@ -80,7 +81,7 @@ export const getCurrentUser = async () => {
         const currentAccount = await account.get();
         if (!currentAccount) throw Error;
 
-        const users = await database.listDocuments({
+        const users = await databases.listDocuments({
             databaseId: appwriteConfig.databaseId,
             collectionId: appwriteConfig.userCollectionId,
             queries: [Query.equal('accountId', currentAccount.$id)],
